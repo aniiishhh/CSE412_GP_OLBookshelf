@@ -1,0 +1,80 @@
+-- DATABASE SCHEMA: Online Bookshelf
+
+-- Drop tables if they exist (for reruns)
+DROP TABLE IF EXISTS ReadingList CASCADE;
+DROP TABLE IF EXISTS BookGenre CASCADE;
+DROP TABLE IF EXISTS BookAuthor CASCADE;
+DROP TABLE IF EXISTS Genre CASCADE;
+DROP TABLE IF EXISTS Author CASCADE;
+DROP TABLE IF EXISTS Book CASCADE;
+DROP TABLE IF EXISTS "User" CASCADE;
+
+-- 1. USER TABLE
+CREATE TABLE "User" (
+    UserID SERIAL PRIMARY KEY,
+    Email VARCHAR(255) UNIQUE NOT NULL,
+    PasswordHash TEXT NOT NULL,
+    DisplayName VARCHAR(100),
+    Role VARCHAR(10) DEFAULT 'USER' CHECK (Role IN ('USER', 'ADMIN')),
+    CreatedAt TIMESTAMP DEFAULT NOW()
+);
+
+-- 2. BOOK TABLE
+CREATE TABLE Book (
+    BookID SERIAL PRIMARY KEY,
+    Title VARCHAR(500) NOT NULL,
+    Description TEXT,
+    BookFormat VARCHAR(50),
+    Pages INT CHECK (Pages >= 0),
+    AverageRating DECIMAL(2,1) CHECK (AverageRating >= 0 AND AverageRating <= 5),
+    TotalRatings INT CHECK (TotalRatings >= 0),
+    ReviewsCount INT CHECK (ReviewsCount >= 0),
+    ISBN VARCHAR(20) UNIQUE NOT NULL,
+    ISBN13 VARCHAR(30),
+    ImageURL TEXT,
+    GoodreadsLink TEXT
+);
+
+-- 3. AUTHOR TABLE
+CREATE TABLE Author (
+    AuthorID SERIAL PRIMARY KEY,
+    Name VARCHAR(255) UNIQUE NOT NULL
+);
+
+-- 4. GENRE TABLE
+CREATE TABLE Genre (
+    GenreID SERIAL PRIMARY KEY,
+    Name VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- 5. BOOKAUTHOR TABLE (Many-to-Many)
+CREATE TABLE BookAuthor (
+    BookID INT NOT NULL,
+    AuthorID INT NOT NULL,
+    PRIMARY KEY (BookID, AuthorID),
+    FOREIGN KEY (BookID) REFERENCES Book(BookID) ON DELETE CASCADE,
+    FOREIGN KEY (AuthorID) REFERENCES Author(AuthorID) ON DELETE CASCADE
+);
+
+-- 6. BOOKGENRE TABLE (Many-to-Many)
+CREATE TABLE BookGenre (
+    BookID INT NOT NULL,
+    GenreID INT NOT NULL,
+    PRIMARY KEY (BookID, GenreID),
+    FOREIGN KEY (BookID) REFERENCES Book(BookID) ON DELETE CASCADE,
+    FOREIGN KEY (GenreID) REFERENCES Genre(GenreID) ON DELETE CASCADE
+);
+
+-- 7. READINGLIST TABLE
+CREATE TABLE ReadingList (
+    UserID INT NOT NULL,
+    BookID INT NOT NULL,
+    Status VARCHAR(15) NOT NULL CHECK (Status IN ('WANT', 'READING', 'COMPLETED', 'DROPPED')),
+    ProgressPages INT CHECK (ProgressPages >= 0),
+    UserRating DECIMAL(2,1) CHECK (UserRating >= 0 AND UserRating <= 5),
+    Note TEXT,
+    AddedAt TIMESTAMP DEFAULT NOW(),
+    PRIMARY KEY (UserID, BookID),
+    FOREIGN KEY (UserID) REFERENCES "User"(UserID) ON DELETE CASCADE,
+    FOREIGN KEY (BookID) REFERENCES Book(BookID) ON DELETE CASCADE
+);
