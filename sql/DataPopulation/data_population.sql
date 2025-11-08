@@ -5,7 +5,7 @@ DELIMITER ',' CSV HEADER;
 
 -- 2. Import BOOKS
 COPY Book(title, description, bookformat, pages, averagerating,
-          totalratings, reviews, isbn, isbn13, imageurl, goodreadslink, bookid)
+          totalratings, reviewscount, isbn, isbn13, imageurl, goodreadslink, bookid)
 FROM '/Users/anishk/Documents/ASU Class Files/CSE412/Group Project/OL_Bookshelf/CSE412_GP_OLBookshelf/data/clean_data/books_table.csv'
 DELIMITER ',' CSV HEADER;
 
@@ -29,7 +29,7 @@ COPY BookGenre(bookid, genreid)
 FROM '/Users/anishk/Documents/ASU Class Files/CSE412/Group Project/OL_Bookshelf/CSE412_GP_OLBookshelf/data/clean_data/book_genre_table.csv'
 DELIMITER ',' CSV HEADER;
 
--- 7. Import READINGLIST (optional for now)
+-- 7. Import READINGLIST
 COPY ReadingList(userid, bookid, status, progresspages, userrating, note, addedat)
 FROM '/Users/anishk/Documents/ASU Class Files/CSE412/Group Project/OL_Bookshelf/CSE412_GP_OLBookshelf/data/clean_data/reading_list_table.csv'
 DELIMITER ',' CSV HEADER;
