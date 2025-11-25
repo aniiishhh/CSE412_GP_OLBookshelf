@@ -1,65 +1,146 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* Base styles */
-@layer base {
-  body {
-    @apply bg-twilight-indigo-50 dark:bg-twilight-indigo-800 transition-colors duration-200;
-  }
-  
-  h1 {
-    @apply text-powder-petal-500 dark:text-powder-petal-400 mb-4 font-serif;
-  }
-  
-  h2, h3, h4, h5, h6 {
-    @apply font-serif text-twilight-indigo-800 dark:text-twilight-indigo-100;
-  }
-  
-  p {
-    @apply leading-relaxed text-twilight-indigo-700 dark:text-twilight-indigo-200;
-  }
-
-  a {
-    @apply text-powder-petal-500 dark:text-powder-petal-300 hover:underline;
-  }
-
-  input, textarea, select {
-    @apply bg-white dark:bg-twilight-indigo-600 border border-twilight-indigo-200 dark:border-twilight-indigo-500 text-twilight-indigo-800 dark:text-white focus:ring-2 focus:ring-powder-petal-400 dark:focus:ring-powder-petal-400 focus:border-transparent;
-  }
-
-  label {
-    @apply text-twilight-indigo-700 dark:text-twilight-indigo-200;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* Custom component classes */
-@layer components {
-  .btn-primary {
-    @apply px-4 py-2 bg-powder-petal-500 dark:bg-powder-petal-400 text-white rounded-md hover:bg-powder-petal-600 dark:hover:bg-powder-petal-500 transition-colors shadow-sm;
-  }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f5f5f5;
+}
 
-  .btn-secondary {
-    @apply px-4 py-2 bg-white dark:bg-twilight-indigo-700 border border-powder-petal-500 dark:border-powder-petal-400 text-powder-petal-500 dark:text-powder-petal-300 rounded-md hover:bg-powder-petal-50 dark:hover:bg-twilight-indigo-600 transition-colors shadow-sm;
-  }
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
-  .card {
-    @apply bg-white dark:bg-twilight-indigo-700 rounded-lg shadow-md p-6 border border-twilight-indigo-100 dark:border-twilight-indigo-600;
-  }
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
 
-  .navbar {
-    @apply bg-white dark:bg-twilight-indigo-800 shadow-md py-3 border-b border-twilight-indigo-100 dark:border-twilight-indigo-700 sticky top-0 z-10;
-  }
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
 
-  .input {
-    @apply w-full px-4 py-2 rounded-md border border-twilight-indigo-200 dark:border-twilight-indigo-500 focus:outline-none focus:ring-2 focus:ring-powder-petal-400 dark:focus:ring-powder-petal-400 bg-white dark:bg-twilight-indigo-600 text-twilight-indigo-800 dark:text-white;
-  }
+.btn-primary:hover {
+  background-color: #0056b3;
+}
 
-  .badge {
-    @apply px-2 py-1 text-xs rounded-full bg-powder-blue-100 dark:bg-powder-blue-900 text-powder-blue-800 dark:text-powder-blue-200;
-  }
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
 
-  .book-cover {
-    @apply h-64 object-cover rounded-t-lg shadow-book hover:shadow-book-hover transition-shadow duration-300;
-  }
+.btn-secondary:hover {
+  background-color: #545b62;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.error {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.success {
+  color: #28a745;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 400px;
+  margin: 50px auto;
+}
+
+.navbar {
+  background-color: #343a40;
+  color: white;
+  padding: 15px 0;
+  margin-bottom: 20px;
+}
+
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar h1 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.navbar button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.navbar button:hover {
+  background-color: #c82333;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.link {
+  color: #007bff;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mt-3 {
+  margin-top: 15px;
 }
