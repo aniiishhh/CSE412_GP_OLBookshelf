@@ -1,5 +1,6 @@
 # Data
-data/*
+data/clean_data/*
+data/GoodReads_100k_books.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
