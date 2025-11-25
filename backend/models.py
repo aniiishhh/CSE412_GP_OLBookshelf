@@ -119,7 +119,7 @@ class ReadingList(Base):
 
     __table_args__ = (
         CheckConstraint(
-            "status IN ('want', 'reading', 'completed', 'dropped')", name="valid_status"
+            "status IN ('WANT', 'READING', 'COMPLETED', 'DROPPED')", name="valid_status"
         ),
         CheckConstraint("progresspages >= 0", name="valid_progress"),
         CheckConstraint("userrating >= 0 AND userrating <= 5", name="valid_rating"),
@@ -213,10 +213,12 @@ class ReadingListBase(BaseModel):
 
     @validator("status")
     def validate_status(cls, v):
-        allowed = ["want", "reading", "completed", "dropped"]
-        if v.lower() not in allowed:
-            raise ValueError(f'Status must be one of: {", ".join(allowed)}')
-        return v.lower()
+        allowed = ["WANT", "READING", "COMPLETED", "DROPPED"]
+        normalized = v.upper()
+        if normalized not in allowed:
+            allowed_display = ", ".join(a.lower() for a in allowed)
+            raise ValueError(f"Status must be one of: {allowed_display}")
+        return normalized
 
     @validator("userrating")
     def validate_rating(cls, v):
@@ -241,6 +243,14 @@ class ReadingListResponse(ReadingListBase):
 
     class Config:
         from_attributes = True
+
+
+class PaginatedBookResponse(BaseModel):
+    items: List[BookResponse]
+    total: int
+    page: int
+    limit: int
+    pages: int
 
 
 # Count query function example

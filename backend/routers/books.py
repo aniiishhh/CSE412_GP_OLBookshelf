@@ -5,7 +5,7 @@ from typing import List, Optional
 
 from config import get_db
 from models import Book, Author, BookAuthor, Genre, BookGenre
-from models import BookResponse, BookCreate
+from models import BookResponse, BookCreate, PaginatedBookResponse
 
 router = APIRouter(
     prefix="/books",
@@ -14,15 +14,19 @@ router = APIRouter(
 )
 
 
-@router.get("/", response_model=List[BookResponse])
+@router.get("/", response_model=PaginatedBookResponse)
 def read_books(
     skip: int = Query(0, ge=0),
-    limit: int = Query(100, ge=1, le=100),
+    limit: int = Query(12, ge=1, le=100),
     title: Optional[str] = None,
+    author: Optional[List[str]] = Query(None),
+    genre: Optional[List[str]] = Query(None),
+    min_rating: Optional[float] = None,
+    max_rating: Optional[float] = None,
     db: Session = Depends(get_db),
 ):
     """
-    Get all books with optional filtering by title.
+    Get all books with optional filtering and pagination.
     """
     query = db.query(Book)
 
@@ -30,9 +34,34 @@ def read_books(
     if title:
         query = query.filter(Book.title.ilike(f"%{title}%"))
 
+    if author:
+        query = query.join(Book.authors).filter(Author.name.in_(author)).distinct()
+
+    if genre:
+        query = query.join(Book.genres).filter(Genre.name.in_(genre)).distinct()
+
+    if min_rating is not None:
+        query = query.filter(Book.averagerating >= min_rating)
+
+    if max_rating is not None:
+        query = query.filter(Book.averagerating <= max_rating)
+
+    # Get total count before pagination
+    total = query.count()
+
     # Apply pagination
     books = query.offset(skip).limit(limit).all()
-    return books
+
+    page = (skip // limit) + 1
+    pages = (total + limit - 1) // limit if limit > 0 else 0
+
+    return {
+        "items": books,
+        "total": total,
+        "page": page,
+        "limit": limit,
+        "pages": pages,
+    }
 
 
 @router.get("/{book_id}", response_model=BookResponse)
