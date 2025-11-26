@@ -44,7 +44,7 @@ Before you begin, ensure you have the following installed:
 ### Step 1: Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/aniiishhh/CSE412_GP_OLBookshelf.git
 cd OL_Bookshelf/CSE412_GP_OLBookshelf
 ```
 
@@ -53,6 +53,7 @@ cd OL_Bookshelf/CSE412_GP_OLBookshelf
 The data files are compressed in a ZIP file. Extract them before populating the database.
 
 **On macOS/Linux:**
+
 ```bash
 cd data
 unzip Data.zip
@@ -60,6 +61,7 @@ cd ..
 ```
 
 **On Windows (PowerShell):**
+
 ```powershell
 cd data
 Expand-Archive -Path Data.zip -DestinationPath .
@@ -67,6 +69,7 @@ cd ..
 ```
 
 **On Windows (Command Prompt):**
+
 ```cmd
 cd data
 tar -xf Data.zip
@@ -74,6 +77,7 @@ cd ..
 ```
 
 After extraction, you should see the following structure in `data/clean_data/`:
+
 - `authors_table.csv`
 - `book_author_table.csv`
 - `book_genre_table.csv`
@@ -113,17 +117,20 @@ CREATE DATABASE bookshelf;
 Run the DDL script to create all necessary tables in your database.
 
 **Using pgAdmin:**
+
 1. Open pgAdmin and connect to your database
 2. Right-click on your database → Query Tool
 3. Open the file [`sql/DDL/CREATE_MASTER.sql`](sql/DDL/CREATE_MASTER.sql)
 4. Execute the script (F5 or click Run)
 
 **Using psql command line:**
+
 ```bash
 psql -U postgres -d bookshelf -f sql/DDL/CREATE_MASTER.sql
 ```
 
 This script creates the following tables:
+
 - `User` - User accounts
 - `Book` - Book information
 - `Author` - Author information
@@ -138,12 +145,14 @@ Before running the data population script, you need to update the file paths in 
 
 **On macOS/Linux:**
 The paths should look like:
+
 ```sql
 FROM '/Users/yourusername/path/to/CSE412_GP_OLBookshelf/data/clean_data/users_table.csv'
 ```
 
 **On Windows:**
 The paths should look like:
+
 ```sql
 FROM 'C:\Users\yourusername\path\to\CSE412_GP_OLBookshelf\data\clean_data\users_table.csv'
 ```
@@ -151,6 +160,7 @@ FROM 'C:\Users\yourusername\path\to\CSE412_GP_OLBookshelf\data\clean_data\users_
 **Quick Path Update:**
 
 **On macOS/Linux:**
+
 ```bash
 # Get your current absolute path
 pwd
@@ -158,6 +168,7 @@ pwd
 ```
 
 **On Windows (PowerShell):**
+
 ```powershell
 # Get your current absolute path
 Get-Location
@@ -165,6 +176,7 @@ Get-Location
 ```
 
 **On Windows (Command Prompt):**
+
 ```cmd
 cd
 # Then update the paths in sql/DataPopulation/data_population.sql accordingly
@@ -175,11 +187,13 @@ cd
 Run the data population script to load all CSV data into the database.
 
 **Using pgAdmin:**
+
 1. Open the file [`sql/DataPopulation/data_population.sql`](sql/DataPopulation/data_population.sql)
 2. Make sure all file paths are updated (see Step 5)
 3. Execute the script in pgAdmin Query Tool
 
 **Using psql command line:**
+
 ```bash
 psql -U postgres -d bookshelf -f sql/DataPopulation/data_population.sql
 ```
@@ -187,6 +201,7 @@ psql -U postgres -d bookshelf -f sql/DataPopulation/data_population.sql
 > **Note**: If you encounter permission errors with the `COPY` command, you may need to use `\copy` instead in psql, or ensure PostgreSQL has read access to the CSV files.
 
 This will populate your database with:
+
 - User accounts
 - Books (100,000+ entries)
 - Authors and their relationships to books
@@ -196,11 +211,13 @@ This will populate your database with:
 ### Step 7: Configure Backend Environment Variables
 
 1. Navigate to the backend directory:
+
 ```bash
 cd backend
 ```
 
 2. Create a `.env` file from the example:
+
 ```bash
 # On macOS/Linux
 cp env.example .env
@@ -225,7 +242,8 @@ JWT_ALGORITHM=HS256
 JWT_EXPIRATION_MINUTES=30
 ```
 
-> **Important**: 
+> **Important**:
+>
 > - Replace `your_password_here` with your actual PostgreSQL password
 > - Replace `your_jwt_secret_key_here` with a secure random string (e.g., generate one using `openssl rand -hex 32`)
 
@@ -234,23 +252,27 @@ JWT_EXPIRATION_MINUTES=30
 1. Create a Python virtual environment (recommended):
 
 **On macOS/Linux:**
+
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 ```
 
 **On Windows:**
+
 ```powershell
 python -m venv venv
 .\venv\Scripts\Activate.ps1
 ```
 
 2. Install Python dependencies:
+
 ```bash
 pip install -r requirements.txt
 ```
 
 The main dependencies include:
+
 - FastAPI
 - SQLAlchemy
 - psycopg2-binary (PostgreSQL adapter)
@@ -261,16 +283,19 @@ The main dependencies include:
 ### Step 9: Install Frontend Dependencies
 
 1. Navigate to the frontend directory:
+
 ```bash
 cd ../frontend
 ```
 
 2. Install Node.js dependencies:
+
 ```bash
 npm install
 ```
 
 This will install all required packages including:
+
 - React
 - TypeScript
 - Vite (build tool)
@@ -282,6 +307,7 @@ This will install all required packages including:
 #### Start the Backend Server
 
 1. Navigate to the backend directory:
+
 ```bash
 cd backend
 ```
@@ -289,16 +315,19 @@ cd backend
 2. Activate your virtual environment (if not already active):
 
 **On macOS/Linux:**
+
 ```bash
 source venv/bin/activate
 ```
 
 **On Windows:**
+
 ```powershell
 .\venv\Scripts\Activate.ps1
 ```
 
 3. Start the FastAPI server:
+
 ```bash
 uvicorn main:app --reload --port 8000
 ```
@@ -306,6 +335,7 @@ uvicorn main:app --reload --port 8000
 The backend API will be available at `http://localhost:8000`
 
 You can also access the interactive API documentation at:
+
 - Swagger UI: `http://localhost:8000/docs`
 - ReDoc: `http://localhost:8000/redoc`
 
@@ -313,11 +343,13 @@ You can also access the interactive API documentation at:
 
 1. Open a new terminal window/tab
 2. Navigate to the frontend directory:
+
 ```bash
 cd frontend
 ```
 
 3. Start the Vite development server:
+
 ```bash
 npm run dev
 ```
@@ -380,17 +412,21 @@ CSE412_GP_OLBookshelf/
 The backend provides the following main API endpoints:
 
 - **Authentication**:
+
   - `POST /auth/register` - Register a new user
   - `POST /auth/login` - Login and get JWT token
 
 - **Books**:
+
   - `GET /books/` - Get paginated list of books with filters
   - `GET /books/{book_id}` - Get book details
 
 - **Authors**:
+
   - `GET /authors/` - Get list of authors (with search)
 
 - **Genres**:
+
   - `GET /genres/` - Get list of genres (with search)
 
 - **Reading List**:
@@ -437,9 +473,11 @@ See [LICENSE](LICENSE) file for details.
 
 ## Contributors
 
-- CSE 412 Group Project Team
+- Anish Pravin Kulkarni
+- Alexander Matter
+- Neeharika Mandadapu
+- Lorenzo Martinez
 
 ---
 
 For questions or issues, please refer to the project documentation or contact the development team.
-
